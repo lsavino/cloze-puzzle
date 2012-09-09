@@ -20,5 +20,5 @@ main = do
 blankWords :: ([String], [String]) -> Int -> String -> ([String], [String])
 blankWords (remainingWords, removedWords) i word =
     if (rem i 5) == 0
-    then (remainingWords ++ ["_____"], removedWords ++ [word])
+    then (remainingWords ++ ["__" ++ show (div i 5) ++ "__"], removedWords ++ [word])
     else (remainingWords ++ [word], removedWords)
