@@ -1,5 +1,6 @@
 module Main where
 
+import Control.Monad(when)
 import Data.List
 import Data.Sequence
 import Data.String
@@ -16,9 +17,7 @@ main = do
     putStrLn displayText
     putStrLn $ "\n\nRemoved words: " ++ (concat $ intersperse " " (Data.List.sort removedWords))
 
-    theGuess <- getLine
-    putStrLn $ "\n\nYou said: " ++ theGuess
-
+    askForGuess removedWords
 
 blankWords :: ([String], [String]) -> Int -> String -> ([String], [String])
 blankWords (remainingWords, removedWords) i word =
@@ -30,6 +29,14 @@ data RemovedWord = RemovedWord {
     word :: String,
     index :: Int
 }
+
+askForGuess :: [String] -> IO ()
+askForGuess removedWords = do
+    theGuess <- getLine
+    when (not $ Data.List.null theGuess) $ do
+        let isValidGuess = checkGuess removedWords theGuess
+        putStrLn $ "\n\nYou said: " ++ theGuess ++ "\nValid? " ++ show isValidGuess 
+        askForGuess removedWords
 
 checkGuess :: [String] -> String -> Bool
 checkGuess removedWords guess =
