@@ -14,7 +14,7 @@ main = do
         (blankedText, removedWords) = foldlWithIndex blankWords ([], []) sequencedWords
         displayText = concat $ intersperse " " blankedText
     putStrLn displayText
-    putStrLn $ "Removed words: " ++ (concat $ intersperse " " (map word removedWords))
+    putStrLn $ "Removed words: " ++ (concat $ intersperse " " (Data.List.sort (map word removedWords)))
 
 
 blankWords :: ([String], [RemovedWord]) -> Int -> String -> ([String], [RemovedWord])
