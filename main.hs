@@ -14,11 +14,16 @@ main = do
         (blankedText, removedWords) = foldlWithIndex blankWords ([], []) sequencedWords
         displayText = concat $ intersperse " " blankedText
     putStrLn displayText
-    putStrLn $ "Removed words: " ++ (concat $ intersperse " " removedWords)
+    putStrLn $ "Removed words: " ++ (concat $ intersperse " " (map word removedWords))
 
 
-blankWords :: ([String], [String]) -> Int -> String -> ([String], [String])
+blankWords :: ([String], [RemovedWord]) -> Int -> String -> ([String], [RemovedWord])
 blankWords (remainingWords, removedWords) i word =
     if (rem i 5) == 0
-    then (remainingWords ++ ["__" ++ show (div i 5) ++ "__"], removedWords ++ [word])
+    then (remainingWords ++ ["__" ++ show (div i 5) ++ "__"], removedWords ++ [RemovedWord word (div i 5)])
     else (remainingWords ++ [word], removedWords)
+
+data RemovedWord = RemovedWord {
+    word :: String,
+    index :: Int
+}
