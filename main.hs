@@ -32,12 +32,16 @@ data RemovedWord = RemovedWord {
 
 askForGuess :: [String] -> IO ()
 askForGuess removedWords = do
+    putStrLn "\nEnter a guess:"
     theGuess <- getLine
     when (not $ Data.List.null theGuess) $ do
-        let isValidGuess = checkGuess removedWords theGuess
-        putStrLn $ "\n\nYou said: " ++ theGuess ++ "\nValid? " ++ show isValidGuess 
+        let (indexString:tail) = (words theGuess)
+            index = read indexString
+            guess = head tail
+            isValidGuess = checkGuess removedWords (index, guess)
+        putStrLn $ "\n\nYou said: " ++ guess ++ "\nValid? " ++ show isValidGuess 
         askForGuess removedWords
 
-checkGuess :: [String] -> String -> Bool
-checkGuess removedWords guess =
+checkGuess :: [String] -> (Int, String) -> Bool
+checkGuess removedWords (index, guess) =
     elem guess removedWords
