@@ -14,16 +14,23 @@ main = do
         (blankedText, removedWords) = foldlWithIndex blankWords ([], []) sequencedWords
         displayText = concat $ intersperse " " blankedText
     putStrLn displayText
-    putStrLn $ "Removed words: " ++ (concat $ intersperse " " (Data.List.sort (map word removedWords)))
+    putStrLn $ "\n\nRemoved words: " ++ (concat $ intersperse " " (Data.List.sort removedWords))
+
+    theGuess <- getLine
+    putStrLn $ "\n\nYou said: " ++ theGuess
 
 
-blankWords :: ([String], [RemovedWord]) -> Int -> String -> ([String], [RemovedWord])
+blankWords :: ([String], [String]) -> Int -> String -> ([String], [String])
 blankWords (remainingWords, removedWords) i word =
     if (rem i 5) == 0
-    then (remainingWords ++ ["__" ++ show (div i 5) ++ "__"], removedWords ++ [RemovedWord word (div i 5)])
+    then (remainingWords ++ ["__" ++ show (div i 5) ++ "__"], removedWords ++ [word]) 
     else (remainingWords ++ [word], removedWords)
 
 data RemovedWord = RemovedWord {
     word :: String,
     index :: Int
 }
+
+checkGuess :: [String] -> String -> Bool
+checkGuess removedWords guess =
+    elem guess removedWords
